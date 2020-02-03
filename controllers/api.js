@@ -9,7 +9,8 @@ exports.getHelp = (req, res, next) => {
 }
 
 exports.getUid = (req, res, next) => {
-  User.findOne({ twitterUid: req.params.uid })
+  // Remove Mongodb _id fields for presentation
+  User.findOne({ twitterUid: req.params.uid },'-_id -services._id')
     .then(user => { 
       res.json({
       user_id: user.twitterUid,
