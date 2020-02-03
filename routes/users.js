@@ -14,5 +14,7 @@ router.post('/add_lapp', ensureLoggedIn('/login'), usersController.postAddLapp);
 /* POST remove lapp */
 router.post('/remove_lapp', ensureLoggedIn('/login'), usersController.postRemoveLapp);
 
+/* GET user page */
+router.get('/:screen_name', usersController.getUserPage);
 
 module.exports = router;

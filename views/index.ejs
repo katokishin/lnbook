@@ -16,6 +16,30 @@
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <h2>Look up an LNBook user by Twitter @username:</h2>
+          <form action="" method="GET">
+            <fieldset>
+              <div class="form-group w-50">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend"><span class="input-group-text">@</span></div>
+                  <input type="text" id="username_input" class="form-control" placeholder="username">
+                </div>
+                <button type="submit" class="submit btn btn-primary">Look up</button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
     </div>
+
+    <script>
+      $('.submit').click(function() {
+        $(this).parents('form').attr('action', ('/users/'+$('#username_input').val()));
+        $(this).parents('form').submit();
+      });
+    </script>
 
 <%- include('includes/end.ejs') %>

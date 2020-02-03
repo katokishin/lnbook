@@ -1,0 +1,33 @@
+<%- include('includes/head.ejs') %>
+  </head>
+  <body>
+    <%- include('includes/navbar.ejs') %>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 pt-5">
+          <h1>Username: @<%= tweet.screen_name %></h1>
+          <p>
+            Twitter ID: <%= tweet.id_str %>
+          </p>
+          <p>
+            Connected lapps:
+          </p>
+          <table class="table table-hover">
+            <thead>
+              <th scope="col">Service</th>
+              <th scope="col">Invoice</th>
+            </thead>
+            <tbody>
+              <% user.services.forEach(service => { %>
+                <tr>
+                  <th scope="row"><%= service.name  %></th>
+                  <td><%= service.invoice %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+<%- include('includes/end.ejs') %>

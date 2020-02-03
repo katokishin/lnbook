@@ -1,4 +1,5 @@
 module.exports.twitter = {
   key: 'twitter api key',
-  secret: 'tewitter api secret'
+  secret: 'twitter api secret',
+  bearer: 'bearer token here'
 }

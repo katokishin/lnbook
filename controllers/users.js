@@ -1,5 +1,14 @@
 const User = require('../models/user');
 
+// Connect to Twitter API
+const Twitter = require('twitter');
+const creds = require('../creds');
+const client = new Twitter({
+  consumer_key: creds.twitter.key,
+  consumer_secret: creds.twitter.secret,
+  bearer_token: creds.twitter.bearer
+});
+
 /* GET dashboard page */
 exports.getDashboard = (req, res, next) => {
   User.findOne({ twitterUid: req.session.passport.user.twitterUid })
@@ -14,6 +23,33 @@ exports.getDashboard = (req, res, next) => {
     console.log(err);
   });
 }
+
+/* GET user page */
+exports.getUserPage = (req, res, next) => {
+  client.get('users/show', { screen_name: req.params.screen_name })
+    .then(tweet => {
+      User.findOne({ twitterUid: tweet.id_str })
+        .then(user => {
+          if (user !== null) {
+            res.render('user', {
+              title: 'User: '+ tweet.screen_name,
+              session: req.session.passport,
+              tweet: tweet,
+              user: user 
+          })} else {
+            res.redirect('/');
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      })
+      .catch(err => {
+        // Includes case where there is no such user
+        console.log(err);
+        res.redirect('/');
+      });
+  }
 
 // Create user
 exports.createUser = (req, res, next) => {
