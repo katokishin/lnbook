@@ -46,19 +46,9 @@ exports.allUsers = (req, res, next) => {
 } 
 */
 
-// Find user by twitterUid
-exports.findUser = (req, res, next) => {
-  User.findOne({ twitterUid: req.body.twitterUid })
-    .then(user => {
-      // do something with user
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}
-
 // Update user
-/* exports.updateUser = (req, res, next) => {
+/*
+exports.updateUser = (req, res, next) => {
   const spotlightInvoice = req.body.spotlightInvoice;
   User.findOne( {twitterUid: req.body.twitterUid })
     .then(user => {
@@ -72,7 +62,8 @@ exports.findUser = (req, res, next) => {
     .catch(err => {
       console.log(err);
     });
-} */
+}
+*/
 
 exports.postAddLapp = (req, res, next) => {
   const service = req.body.service;
@@ -93,6 +84,7 @@ exports.postAddLapp = (req, res, next) => {
 }
 
 // Delete user
+/*
 exports.deleteUser = (req, res, next) => {
   User.findOneAndDelete( {twitterUid: req.body.twitterUid })
     .then(result => {
@@ -102,3 +94,4 @@ exports.deleteUser = (req, res, next) => {
       console.log(err);
     });
 }
+*/
