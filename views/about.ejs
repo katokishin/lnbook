@@ -1,0 +1,23 @@
+<%- include('includes/head.ejs') %>
+  </head>
+  <body>
+    <%- include('includes/navbar.ejs') %>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 pt-5">
+          <h1>How LNBook works</h1>
+          <p>
+            Description
+          </p>
+          <h1>Using the API</h1>
+          <p>
+            Curl /api for a list of API commands. Curl /api/twitter_id for a list of accounts 
+            and invoices belonging to that user on record with us. <br>
+            NOTE: twitter_id is a constant string of numbers, NOT the @name or screen name. 
+            Twitter_id does not change even if @username or screen name changes.
+          </p>
+        </div>
+      </div>
+    </div>
+
+<%- include('includes/end.ejs') %>

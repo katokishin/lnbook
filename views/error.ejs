@@ -1,0 +1,9 @@
+<%- include('includes/head.ejs') %>
+</head>
+<body>
+  <%- include('includes/navbar.ejs') %>
+  <h1><%= message %></h1>
+  <h2><%= error.status %></h2>
+  <pre><%= error.stack %></pre>
+  
+<%- include('includes/end.ejs') %>
