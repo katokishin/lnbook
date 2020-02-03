@@ -83,6 +83,23 @@ exports.postAddLapp = (req, res, next) => {
     });
 }
 
+exports.postRemoveLapp = (req, res, next) => {
+  const service_id = req.body.service_id;
+  User.findOneAndUpdate( { twitterUid: req.session.passport.user.twitterUid }, { $pull: { services : { _id : service_id } } })
+  .then(user => {
+    console.log(user);
+    return user.save();
+  })
+  .then(result => {
+    console.log('Removed lapp');
+    // other stuff like redirects
+    res.redirect('/users/dashboard');
+  })
+  .catch(err => {
+    console.log(err);
+  });
+}
+
 // Delete user
 /*
 exports.deleteUser = (req, res, next) => {

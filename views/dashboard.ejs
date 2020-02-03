@@ -16,12 +16,19 @@
             <thead>
               <th scope="col">Service</th>
               <th scope="col">Invoice</th>
+              <th scope="col">Remove</th>
             </thead>
             <tbody>
               <% user.services.forEach(service => { %>
                 <tr>
                   <th scope="row"><%= service.name %></th>
                   <td><%= service.invoice %></td>
+                  <td>
+                    <form action="/users/remove_lapp" method="POST">
+                      <input type="hidden" name="service_id" value="<%= service._id %>">
+                      <button type="submit" class="btn btn-danger">Remove</button>
+                    </form>
+                  </td>
                 </tr>
               <% }); %>
             </tbody>

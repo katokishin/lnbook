@@ -11,4 +11,8 @@ router.get('/dashboard', ensureLoggedIn('/login'), usersController.getDashboard)
 /* POST add lapp */
 router.post('/add_lapp', ensureLoggedIn('/login'), usersController.postAddLapp);
 
+/* POST remove lapp */
+router.post('/remove_lapp', ensureLoggedIn('/login'), usersController.postRemoveLapp);
+
+
 module.exports = router;
