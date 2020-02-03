@@ -2,9 +2,16 @@ const User = require('../models/user');
 
 /* GET dashboard page */
 exports.getDashboard = (req, res, next) => {
-  res.render('dashboard', {
-    title: 'Dashboard',
-    session: req.session.passport
+  User.findOne({ twitterUid: req.session.passport.user.twitterUid })
+  .then(user => { 
+    res.render('dashboard', {
+      title: 'Dashboard',
+      session: req.session.passport,
+      user: user
+    });
+  })
+  .catch(err => {
+    console.log(err);
   });
 }
 
@@ -51,16 +58,34 @@ exports.findUser = (req, res, next) => {
 }
 
 // Update user
-exports.updateUser = (req, res, next) => {
+/* exports.updateUser = (req, res, next) => {
   const spotlightInvoice = req.body.spotlightInvoice;
   User.findOne( {twitterUid: req.body.twitterUid })
     .then(user => {
-      user.services.spotlight = spotlightInvoice;
+      // update user
       return user.save();
     })
     .then(result => {
       console.log('Updated user');
       // other stuff like redirects
+    })
+    .catch(err => {
+      console.log(err);
+    });
+} */
+
+exports.postAddLapp = (req, res, next) => {
+  const service = req.body.service;
+  const invoice = req.body.invoice;
+  User.findOne( {twitterUid: req.session.passport.user.twitterUid })
+    .then(user => {
+      user.services.push({ name: service, invoice: invoice });
+      return user.save();
+    })
+    .then(result => {
+      console.log('Updated user');
+      // other stuff like redirects
+      res.redirect('/users/dashboard');
     })
     .catch(err => {
       console.log(err);

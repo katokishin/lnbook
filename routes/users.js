@@ -13,4 +13,7 @@ router.get('/', (req, res, next) => {
 // If not logged in, goes to /login, sets req.session,returnTo to /users/dashboard
 router.get('/dashboard', ensureLoggedIn('/login'), usersController.getDashboard);
 
+/* POST add lapp */
+router.post('/add_lapp', ensureLoggedIn('/login'), usersController.postAddLapp);
+
 module.exports = router;
