@@ -19,6 +19,7 @@
     "morgan": "~1.9.1",
     "passport": "^0.4.1",
     "passport-twitter": "^1.0.4",
+    "request": "^2.88.0",
     "twitter": "^1.7.1"
   },
   "devDependencies": {
