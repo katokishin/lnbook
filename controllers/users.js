@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const apiController = require('../controllers/api');
 
 // Connect to Twitter API
 const Twitter = require('twitter');
@@ -31,13 +32,43 @@ exports.getUserPage = (req, res, next) => {
       User.findOne({ twitterUid: tweet.id_str })
         .then(user => {
           if (user !== null) {
+            console.log("rendering...");
             res.render('user', {
               title: 'User: '+ tweet.screen_name,
               session: req.session.passport,
               tweet: tweet,
-              user: user 
+              user: user
           })} else {
-            res.redirect('/');
+            // Requests tippin and saves into db
+            const r = apiController.addInvoice(req.params.screen_name);
+            if(r){
+              newUser = new User({ twitterUid: tweet.id_str, services: {} });
+              newUser.save()
+              .then(user => {
+                console.log("saved");
+                User.findOne({ twitterUid: tweet.id_str })
+                  .then(user => {
+                    if (user !== null) {
+                      res.render('user', {
+                        title: 'User: '+ tweet.screen_name,
+                        session: req.session.passport,
+                        tweet: tweet,
+                        user: user
+                    })} else {
+                      res.redirect('/');
+                    }
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  });
+              })
+              .catch(err => {
+                console.log(err);
+              });
+            }else{
+              console.log("r is false");
+              res.redirect('/');
+            }
           }
         })
         .catch(err => {
