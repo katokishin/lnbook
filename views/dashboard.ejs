@@ -15,14 +15,14 @@
           <table class="table table-hover">
             <thead>
               <th scope="col">Service</th>
-              <th scope="col">lnurl</th>
+              <th scope="col">LNURL</th>
               <th scope="col">Remove</th>
             </thead>
             <tbody>
               <% user.services.forEach(service => { %>
                 <tr>
                   <th scope="row"><%= service.name %></th>
-                  <td><%= service.invoice %></td>
+                  <td><%= service.lnurl %></td>
                   <td>
                     <form action="/users/remove_lapp" method="POST">
                       <input type="hidden" name="service_id" value="<%= service._id %>">
@@ -42,7 +42,7 @@
                   <option>Spotlight</option>
                   <option>Lntxbot</option>
                 </select>
-                <input type="text" name="invoice" class="form-control" placeholder="Paste lnurl">
+                <input type="text" name="lnurl" class="form-control" placeholder="Paste LNURL">
                 <button type="submit" class="btn btn-primary">Submit</button>
               </div>
             </fieldset>

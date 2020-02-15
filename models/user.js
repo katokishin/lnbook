@@ -8,7 +8,7 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  services: [{ name: String, invoice: String }]
+  services: [{ name: String, lnurl: String }]
 });
 
 // Mongoose will automatically put this in collection "users"

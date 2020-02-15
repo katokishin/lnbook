@@ -137,10 +137,10 @@ exports.updateUser = (req, res, next) => {
 
 exports.postAddLapp = (req, res, next) => {
   const service = req.body.service;
-  const invoice = req.body.invoice;
+  const lnurl = req.body.lnurl;
   User.findOne( {twitterUid: req.session.passport.user.twitterUid })
     .then(user => {
-      user.services.push({ name: service, invoice: invoice });
+      user.services.push({ name: service, lnurl: lnurl });
       return user.save();
     })
     .then(result => {
