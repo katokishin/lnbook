@@ -15,7 +15,7 @@ exports.getHelp = (req, res, next) => {
     message: "Welcome to LNBook API.",
     methods: {
       "/api/[twitter screen_name]": "Returns a list of services and LNURLs for that user.",
-      "/api/getInvoice/[twitter screen_name]": "Returns invoices for services for that user"
+      "/api/getInvoice/[twitter screen_name]": "Also returns invoices for that user. Slower."
     },
     note: "Do NOT include the '@' in queries. Response will contain a 10-digit Twitter UID. This is constant; @names can change."
   });
