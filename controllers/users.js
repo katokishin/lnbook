@@ -32,6 +32,7 @@ exports.getUserPage = (req, res, next) => {
       User.findOne({ twitterUid: tweet.id_str })
         .then(user => {
           if (user !== null) {
+            // If user already exists
             console.log("rendering...");
             res.render('user', {
               title: 'User: '+ tweet.screen_name,
@@ -83,6 +84,7 @@ exports.getUserPage = (req, res, next) => {
   }
 
 // Create user
+/*
 exports.createUser = (req, res, next) => {
   const twitterUid = 123456789;
   const user = new User({ twitterUid: twitterUid });
@@ -94,6 +96,7 @@ exports.createUser = (req, res, next) => {
       console.log(err);
     });
 }
+*/
 
 // Load all users
 /* 

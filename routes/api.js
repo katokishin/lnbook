@@ -7,8 +7,8 @@ const apiController = require('../controllers/api');
 router.get('/', apiController.getHelp);
 
 /* GET API info on user */
-router.get('/:uid', apiController.getUid);
+router.get('/:screen_name', apiController.getUserByName);
 
-router.get('/addInvoice/:uid', apiController.getInvoice);
+router.get('/getInvoice/:screen_name', apiController.getInvoiceByName);
 
 module.exports = router;
