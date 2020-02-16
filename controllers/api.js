@@ -25,16 +25,12 @@ exports.getUserByName = (req, res, next) => {
   client.get('users/show', { screen_name: req.params.screen_name })
     .then(tweet => {
       // Remove Mongodb _id fields for presentation
-      User.findOne({ twitterUid: tweet.id_str },'-_id -services._id')
-      .then(user => { 
+      User.findOrCreate({ twitterUid: tweet.id_str }, user => {
         res.json({
           user_id: user.twitterUid,
           services: user.services
         });
-      })
-      .catch(err => {
-        console.log(err);
-      })
+      });
     })
     .catch(err => {
       console.log(err);
@@ -47,73 +43,26 @@ exports.getUserByName = (req, res, next) => {
 exports.getInvoiceByName = async (req, res, next) => {
   client.get('users/show', { screen_name: req.params.screen_name })
   .then(tweet => {
-    this.addInvoice(tweet.screen_name, invoice => {
-      User.findOne({ twitterUid: tweet.id_str },'-_id -services._id')
-      .then(user => {
-        console.log(user)
-        if(user !== null){
-          res.json({
+    // Remove Mongodb _id fields for presentation
+    User.findOrCreate({ twitterUid: tweet.id_str }, user => {
+      this.addInvoice(req.params.screen_name, invoice => {
+        res.json({
           user_id: user.twitterUid,
           services: user.services,
           invoices: [{
             name: "Tippin.me",
-            invoice: invoice}]
-          });
-        } else {
-          res.json({
-          errors: [{
-            code: "100",
-            message: "Sorry, that user does not exist"}]
-          });
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        res.json({
-        errors: [{
-          code: "101",
-          message: "Sorry, something went wrong"}]
+            invoice: invoice
+          }]
         });
       });
-    })
+    });
   })
   .catch(err => {
     console.log(err);
     res.json({
-    errors: err
+      errors: err
     });
   });
-  // Save invoice
-  /**
-  if(invoice){
-    User.findOne( {twitterUid: req.params.uid })
-      .then(user => {
-        user.services.push({ name: 'Tippin.me', invoice: invoice });
-        user.save()
-        .then(user => {
-          User.findOne({ twitterUid: req.params.uid },'-_id -services._id')
-            .then(user => {
-              res.json({
-              user_id: user.twitterUid,
-              services: user.services
-              });
-            })
-            .catch(err => {
-              console.log(err);
-            })
-        })
-        .catch(err => {
-          console.log(err);
-        })
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }else{
-    res.json({
-      error: true,
-    });
-  }**/
 }
 
 exports.addInvoice = (screen_name, _callback) => {

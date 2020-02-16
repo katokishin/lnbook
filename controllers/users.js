@@ -29,59 +29,24 @@ exports.getDashboard = (req, res, next) => {
 exports.getUserPage = (req, res, next) => {
   client.get('users/show', { screen_name: req.params.screen_name })
     .then(tweet => {
-      User.findOne({ twitterUid: tweet.id_str })
-        .then(user => {
-          if (user !== null) {
-            // If user already exists
-            console.log("rendering...");
-            res.render('user', {
-              title: 'User: '+ tweet.screen_name,
-              session: req.session.passport,
-              tweet: tweet,
-              user: user
-          })} else {
-            // Requests tippin and saves into db
-            const r = apiController.addInvoice(req.params.screen_name);
-            if(r){
-              newUser = new User({ twitterUid: tweet.id_str, services: {} });
-              newUser.save()
-              .then(user => {
-                console.log("saved");
-                User.findOne({ twitterUid: tweet.id_str })
-                  .then(user => {
-                    if (user !== null) {
-                      res.render('user', {
-                        title: 'User: '+ tweet.screen_name,
-                        session: req.session.passport,
-                        tweet: tweet,
-                        user: user
-                    })} else {
-                      res.redirect('/');
-                    }
-                  })
-                  .catch(err => {
-                    console.log(err);
-                  });
-              })
-              .catch(err => {
-                console.log(err);
-              });
-            }else{
-              console.log("r is false");
-              res.redirect('/');
-            }
-          }
+      User.findOrCreate({ twitterUid: tweet.id_str }, user => {
+        apiController.addInvoice(req.params.screen_name, invoice => {
+          res.render('user', {
+            title: 'User: '+ tweet.screen_name,
+            session: req.session.passport,
+            tweet: tweet,
+            user: user,
+            invoice: invoice
+          });
         })
-        .catch(err => {
-          console.log(err);
-        });
       })
-      .catch(err => {
-        // Includes case where there is no such user
-        console.log(err);
-        res.redirect('/');
-      });
-  }
+    })
+    .catch(err => {
+      // Includes case where there is no such Twitter profile
+      console.log(err);
+      res.redirect('/');
+    });
+}
 
 // Create user
 /*
