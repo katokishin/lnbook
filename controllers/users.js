@@ -29,60 +29,27 @@ exports.getDashboard = (req, res, next) => {
 exports.getUserPage = (req, res, next) => {
   client.get('users/show', { screen_name: req.params.screen_name })
     .then(tweet => {
-      User.findOne({ twitterUid: tweet.id_str })
-        .then(user => {
-          if (user !== null) {
-            console.log("rendering...");
-            res.render('user', {
-              title: 'User: '+ tweet.screen_name,
-              session: req.session.passport,
-              tweet: tweet,
-              user: user
-          })} else {
-            // Requests tippin and saves into db
-            const r = apiController.addInvoice(req.params.screen_name);
-            if(r){
-              newUser = new User({ twitterUid: tweet.id_str, services: {} });
-              newUser.save()
-              .then(user => {
-                console.log("saved");
-                User.findOne({ twitterUid: tweet.id_str })
-                  .then(user => {
-                    if (user !== null) {
-                      res.render('user', {
-                        title: 'User: '+ tweet.screen_name,
-                        session: req.session.passport,
-                        tweet: tweet,
-                        user: user
-                    })} else {
-                      res.redirect('/');
-                    }
-                  })
-                  .catch(err => {
-                    console.log(err);
-                  });
-              })
-              .catch(err => {
-                console.log(err);
-              });
-            }else{
-              console.log("r is false");
-              res.redirect('/');
-            }
-          }
+      User.findOrCreate({ twitterUid: tweet.id_str }, user => {
+        apiController.addInvoice(req.params.screen_name, invoice => {
+          res.render('user', {
+            title: 'User: '+ tweet.screen_name,
+            session: req.session.passport,
+            tweet: tweet,
+            user: user,
+            invoice: invoice
+          });
         })
-        .catch(err => {
-          console.log(err);
-        });
       })
-      .catch(err => {
-        // Includes case where there is no such user
-        console.log(err);
-        res.redirect('/');
-      });
-  }
+    })
+    .catch(err => {
+      // Includes case where there is no such Twitter profile
+      console.log(err);
+      res.redirect('/');
+    });
+}
 
 // Create user
+/*
 exports.createUser = (req, res, next) => {
   const twitterUid = 123456789;
   const user = new User({ twitterUid: twitterUid });
@@ -94,6 +61,7 @@ exports.createUser = (req, res, next) => {
       console.log(err);
     });
 }
+*/
 
 // Load all users
 /* 
@@ -134,10 +102,10 @@ exports.updateUser = (req, res, next) => {
 
 exports.postAddLapp = (req, res, next) => {
   const service = req.body.service;
-  const invoice = req.body.invoice;
+  const lnurl = req.body.lnurl;
   User.findOne( {twitterUid: req.session.passport.user.twitterUid })
     .then(user => {
-      user.services.push({ name: service, invoice: invoice });
+      user.services.push({ name: service, lnurl: lnurl });
       return user.save();
     })
     .then(result => {

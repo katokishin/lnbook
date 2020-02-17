@@ -11,14 +11,13 @@
           </p>
           <h1>Using the API</h1>
           <p>
-            Curl /api for a list of API commands. Curl /api/[twitter_id] for a list of accounts 
-            and invoices belonging to that user on record with us. <br>
-            NOTE: twitter_id is a 10-digit string of numbers, NOT the @screen_name or name.
+            Curl /api for a list of API commands. Curl /api/[twitter screen_name] for a list of accounts 
+            and LNURLs belonging to that user on record with us. <br>
+            NOTE: Do not include the '@' in the query.
           </p>
           <p>
-            Curl /api/addInvoice for a list of API commands. Curl /api/addInvoice/[twitter_id] for a list of accounts 
-            and invoices that are newly added from tippin.me. <br>
-            NOTE: twitter_id is a 10-digit string of numbers, NOT the @screen_name or name.
+            Curl /api/getInvoice/[twitter screen_name] to get new invoices from Tippin.me in addition to the above.
+            This takes somewhat more time.
           </p>
         </div>
       </div>

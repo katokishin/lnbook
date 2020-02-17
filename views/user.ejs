@@ -7,7 +7,7 @@
         <div class="col-sm-12 pt-5">
           <h1>Username: @<%= tweet.screen_name %></h1>
           <p>
-            Twitter ID: <a href="/api/addinvoice/<%= tweet.id_str %>" target="_blank"><%= tweet.id_str %></a>
+            Twitter ID: <a href="/api/getInvoice/<%= tweet.screen_name %>" target="_blank"><%= tweet.id_str %></a>
           </p>
           <p>
             Connected lapps:
@@ -21,7 +21,7 @@
               <% user.services.forEach(service => { %>
                 <tr>
                   <th scope="row"><%= service.name  %></th>
-                  <td><%= service.invoice %></td>
+                  <td><%= service.lnurl %></td>
                 </tr>
               <% }) %>
             </tbody>
